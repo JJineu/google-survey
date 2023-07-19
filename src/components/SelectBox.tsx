@@ -1,19 +1,17 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 
 type Props = {
-  menu: { id: number; name: string }[];
-  onChange: () => {};
+  value: number;
+  menu: { typeId: number; name: string }[];
+  onChange: (e:SelectChangeEvent) => void;
 };
-export default function SelectBox({ menu, onChange }: Props) {
+export default function SelectBox({ value, menu, onChange }: Props) {
+
   return (
     <FormControl fullWidth>
-      {/* <InputLabel >Age</InputLabel> */}
-      <Select
-        // value={option}
-        onChange={onChange}
-      >
+      <Select onChange={onChange} value={value.toString()}>
         {menu.map((m) => (
-          <MenuItem key={m.id} value={m.id}>
+          <MenuItem key={m.typeId} value={m.typeId}>
             {m.name}
           </MenuItem>
         ))}

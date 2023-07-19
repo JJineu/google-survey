@@ -5,7 +5,7 @@ export type SurveyInfo = {
 
 export type Question = {
   id: string;
-  type: QuestionType;
+  type: number;
   title: string;
   options: Option[];
   isNecessary: boolean;

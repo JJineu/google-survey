@@ -21,14 +21,30 @@ export const question = createSlice({
   name: "question",
   initialState,
   reducers: {
-    setQuestion: (state, action) => {},
-    setNecessary: (state, action) => {},
-    changeType: (state, action) => {},
+    setQuestion: (state, action) => {
+      const { id, title } = action.payload;
+      const question = state.find((s) => s.id === id);
+      question && (question.title = title);
+    },
+    setNecessary: (state, action) => {
+      const id = action.payload;
+      const question = state.find((s) => s.id === id);
+      question && (question.isNecessary = !question.isNecessary);
+    },
+    changeType: (state, action) => {
+      const { id, typeId } = action.payload;
+      const question = state.find((s) => s.id === id);
+      question && (question.type = typeId);
+    },
     addOption: (state, action) => {},
     deleteOption: (state, action) => {},
     addQuestion: (state, action) => {
       const newQuestion = action.payload;
       state.push(newQuestion);
+    },
+    deleteQuestion: (state, action) => {
+      const id = action.payload;
+      return state.filter((s) => s.id !== id);
     },
   },
 });
