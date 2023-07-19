@@ -26,6 +26,10 @@ export const question = createSlice({
     changeType: (state, action) => {},
     addOption: (state, action) => {},
     deleteOption: (state, action) => {},
+    addQuestion: (state, action) => {
+      const newQuestion = action.payload;
+      state.push(newQuestion);
+    },
   },
 });
 

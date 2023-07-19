@@ -16,7 +16,7 @@ type Option = {
   option: string;
 };
 
-enum QuestionType {
+export enum QuestionType {
   SHORT_ANSWER,
   LONG_ANSWER,
   MULTIPLE_CHOICE,
