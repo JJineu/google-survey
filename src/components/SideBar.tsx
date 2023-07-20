@@ -12,7 +12,7 @@ export default function SideBar() {
     options: [
       {
         id: 1,
-        option: "옵션 1",
+        content: "옵션 1",
       },
     ],
     isNecessary: false,

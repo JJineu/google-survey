@@ -10,7 +10,8 @@ export type Question = {
   options: QuestionOption[];
   isNecessary: boolean;
   optionOfAnswer: string;
-  optionOfList: Array<number>;
+  // optionOfList: Array<number>;
+  optionOfList: number[];
 };
 
 export type QuestionOption = {

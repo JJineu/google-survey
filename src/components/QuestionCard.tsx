@@ -32,34 +32,28 @@ export default function QuestionCard({ card }: Props) {
     dispatch(
       questionActions.setQuestion({ id: card.id, title: e.target.value })
     );
-    console.log("question change", card.id);
   };
   const handleQuestionType = (e: SelectChangeEvent) => {
     dispatch(
       questionActions.changeType({ id: card.id, typeId: e.target.value })
     );
-    console.log("selectbox", card.id);
   };
 
   const handleCopyQuestion = () => {
     const id = v4();
     dispatch(questionActions.addQuestion(copyQuestion(id)));
-    console.log("add-q", card.id);
   };
   const handleDeleteQuestion = () => {
     dispatch(questionActions.deleteQuestion(card.id));
-    console.log("delete-q", card.id);
-    console.log(card);
   };
   const handleNecessary = () => {
     dispatch(questionActions.setNecessary(card.id));
-    console.log("isne", card.id);
   };
   return (
     <div className="w-full px-5">
-      <div className="flex mb-3">
+      <div className="flex">
         <input
-          className="w-full text-l p-4 mr-3 bg-slate-100"
+          className="w-full text-l p-4 mr-3 bg-slate-100 focus:border-b-2 focus:border-purple-500 outline-none"
           type="text"
           placeholder="질문"
           value={card.title}
@@ -74,6 +68,9 @@ export default function QuestionCard({ card }: Props) {
         </div>
       </div>
       {/* <OptionBox cardId={card.id} type={card.type} options={card.options} /> */}
+      <div className="flex">
+        <OptionBox card={card} location={'main'}/>
+      </div>
       <div className="flex justify-end items-center p-2 border-t border-slate-400">
         <CopyButton onClick={handleCopyQuestion} />
         <DeleteButton onClick={handleDeleteQuestion} />

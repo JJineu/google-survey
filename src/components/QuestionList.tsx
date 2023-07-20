@@ -8,7 +8,7 @@ export default function QuestionList() {
     <div className="w-full">
       <ul>
         {question &&
-          question.map((q, idx) => (
+          question.map((q) => (
             <li key={q.id} className="my-3 py-3 bg-white ">
               <QuestionCard card={q} />
             </li>

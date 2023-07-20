@@ -7,33 +7,35 @@ import AnswerOption from "./QuestionOption/AnswerOption";
 import ListOption from "./QuestionOption/ListOption";
 
 type Props = {
-  cardId: string;
-  type: number;
-  options?: QuestionOption[];
+  // cardId: string;
+  // type: number;
+  // options?: QuestionOption[];
+  location: string;
+  card: Question;
 };
-export default function OptionBox({ cardId, type, options }: Props) {
+// export default function OptionBox({ cardId, type, options }: Props) {
+export default function OptionBox({ card, location }: Props) {
+  const { type, options, id: cardId } = card;
   const dispatch = useAppDispatch();
 
   const getOptionList = (type: number) => {
-    console.log('type')
     const lastOptionIndex = (options?.length || 0) + 1;
-    console.log(lastOptionIndex)
     const optionList = options
       ?.map((option) => (
         <ListOption
           type={type}
           questionId={cardId}
-          location="main"
+          // location="main"
           optionId={option.id}
           content={option.content}
-          isLast
+          isLast={false}
         />
       ))
       .concat(
         <ListOption
           type={type}
           questionId={cardId}
-          location="main"
+          // location="main"
           optionId={lastOptionIndex}
           content="옵션 추가"
           isLast={true}
@@ -48,15 +50,13 @@ export default function OptionBox({ cardId, type, options }: Props) {
         return <AnswerOption type={type} questionId={cardId} location="main" />;
       case QuestionType.LONG_ANSWER:
         return <AnswerOption type={type} questionId={cardId} location="main" />;
-      // case QuestionType.MULTIPLE_CHOICE:
-      //   return getOptionList(type);
-      // case QuestionType.CHECK_BOX:
-      //   return getOptionList(type);
-      // case QuestionType.DROP_DOWN:
-      //   return getOptionList(type);
+      case QuestionType.MULTIPLE_CHOICE:
+      case QuestionType.CHECK_BOX:
+      case QuestionType.DROP_DOWN:
+        return getOptionList(type);
       default:
         return;
     }
   };
-  return <div className="my-4">{switchOption()}</div>;
+  return <div className="my-4 w-full">{switchOption()}</div>;
 }

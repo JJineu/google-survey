@@ -50,11 +50,14 @@ export const question = createSlice({
     deleteOption: (state, action) => {
       const { id, optionId } = action.payload;
       const questionIdx = state.findIndex((s) => s.id === id);
-      state[questionIdx].options.filter((o) => o.id !== optionId);
+      const options = state[questionIdx].options.filter(
+        (o) => o.id !== optionId
+      );
+      state[questionIdx].options = options;
     },
-    setOption: (state, action) => {
-      const { id, optionId, content } = action.payload;
-    },
+    // setOption: (state, action) => {
+    //   const { id, optionId, content } = action.payload;
+    // },
     setOptionOfAnswer: (state, action) => {
       const { id, content } = action.payload;
       const question = state.find((s) => s.id === id);

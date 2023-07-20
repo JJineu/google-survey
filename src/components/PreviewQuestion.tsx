@@ -13,7 +13,7 @@ export default function PreviewQuestion({ question }: Props) {
       <span>{question.title}</span>
       {question.isNecessary && <span className=" text-red-500">*</span>}
       {/* 답변 입력 */}
-      <OptionBox cardId={question.id} type={question.type} />
+      {/* <OptionBox cardId={question.id} type={question.type} /> */}
     </div>
   );
 }

@@ -25,11 +25,13 @@ export default function AnswerOption({
       })
     );
   };
+
   const setLocation = (location: location) => {
     switch (location) {
       case "main":
         return (
           <input
+            className="w-full"
             type="text"
             placeholder={type === 0 ? "단답형 텍스트" : "장문형 텍스트"}
             disabled
