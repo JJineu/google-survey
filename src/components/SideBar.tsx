@@ -9,7 +9,6 @@ export default function SideBar() {
   const newQuestion = (id: string) => ({
     id,
     type: 2,
-    title: "제목없는 질문",
     options: [
       {
         id: 1,

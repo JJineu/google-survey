@@ -10,7 +10,7 @@ const initialState: Question[] = [
     options: [
       {
         id: 1,
-        option: "옵션 1",
+        content: "옵션 1",
       },
     ],
     isNecessary: false,
@@ -38,6 +38,9 @@ export const question = createSlice({
     },
     addOption: (state, action) => {},
     deleteOption: (state, action) => {},
+    setOption: (state, action) => {
+      const { id, optionId, content } = action.payload;
+    },
     addQuestion: (state, action) => {
       const newQuestion = action.payload;
       state.push(newQuestion);

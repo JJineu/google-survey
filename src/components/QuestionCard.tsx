@@ -8,6 +8,7 @@ import ToggleButton from "./icons/ToggleButton";
 import { v4 } from "uuid";
 import { ChangeEvent } from "react";
 import { SelectChangeEvent } from "@mui/material";
+import OptionBox from "./OptionBox";
 
 const menu = [
   { typeId: QuestionType.SHORT_ANSWER, name: "단답형" },
@@ -66,7 +67,7 @@ export default function QuestionCard({ card }: Props) {
           />
         </div>
       </div>
-      {/* 드롭다운, 옵션 추가등에 따른 변경 */}
+      <OptionBox card={card} type={card.type} options={card.options} />
       <div className="flex justify-end items-center p-2 border-t border-slate-400">
         <CopyButton onClick={handleCopyQuestion} />
         <DeleteButton onClick={handleDeleteQuestion} />

@@ -7,13 +7,13 @@ export type Question = {
   id: string;
   type: number;
   title: string;
-  options: Option[];
+  options: QuestionOption[];
   isNecessary: boolean;
 };
 
-type Option = {
+export type QuestionOption = {
   id: number;
-  option: string;
+  content: string;
 };
 
 export enum QuestionType {
