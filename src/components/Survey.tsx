@@ -11,10 +11,10 @@ export default function Survey() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col p-5">
       <input
         type="text"
-        // className={}
+        className="text-2xl mb-2"
         placeholder="제목 없는 설문지"
         name="title"
         value={survey.title}
@@ -22,7 +22,7 @@ export default function Survey() {
       />
       <input
         type="text"
-        // className={}
+        className=""
         placeholder="설문지 설명"
         name="detail"
         value={survey.detail}
