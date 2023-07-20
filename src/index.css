@@ -7,4 +7,10 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
+  background-color: rgb(243 232 255);
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }

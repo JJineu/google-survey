@@ -5,15 +5,17 @@ export type SurveyInfo = {
 
 export type Question = {
   id: string;
-  type: QuestionType;
+  type: number;
   title: string;
-  options: Option[];
+  options: QuestionOption[];
   isNecessary: boolean;
+  answer: string;
+  answerList: number[];
 };
 
-type Option = {
+export type QuestionOption = {
   id: number;
-  option: string;
+  content: string;
 };
 
 export enum QuestionType {

@@ -9,14 +9,15 @@ export default function SideBar() {
   const newQuestion = (id: string) => ({
     id,
     type: 2,
-    title: "제목없는 질문",
     options: [
       {
         id: 1,
-        option: "옵션 1",
+        content: "옵션 1",
       },
     ],
     isNecessary: false,
+    answer: "",
+    answerList: [],
   });
 
   const handleAddQuestion = () => {
