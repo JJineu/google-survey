@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import { useAppDispatch } from "../hooks/useRedux";
 import { questionActions } from "../store/slice/question";
 import { Question, QuestionType } from "../types/survey";
 import SelectBox from "./SelectBox";
@@ -11,11 +11,11 @@ import { SelectChangeEvent } from "@mui/material";
 import OptionBox from "./OptionBox";
 
 const menu = [
-  { typeId: QuestionType.SHORT_ANSWER, name: "단답형" },
-  { typeId: QuestionType.LONG_ANSWER, name: "장문형" },
-  { typeId: QuestionType.MULTIPLE_CHOICE, name: "객관식 질문" },
-  { typeId: QuestionType.CHECK_BOX, name: "체크박스" },
-  { typeId: QuestionType.DROP_DOWN, name: "드롭다운" },
+  { id: QuestionType.SHORT_ANSWER, content: "단답형" },
+  { id: QuestionType.LONG_ANSWER, content: "장문형" },
+  { id: QuestionType.MULTIPLE_CHOICE, content: "객관식 질문" },
+  { id: QuestionType.CHECK_BOX, content: "체크박스" },
+  { id: QuestionType.DROP_DOWN, content: "드롭다운" },
 ];
 
 type Props = {
@@ -61,15 +61,14 @@ export default function QuestionCard({ card }: Props) {
         />
         <div className="w-60">
           <SelectBox
-            value={card.type}
+            value={card.type.toString()}
             menu={menu}
             onChange={handleQuestionType}
           />
         </div>
       </div>
-      {/* <OptionBox cardId={card.id} type={card.type} options={card.options} /> */}
       <div className="flex">
-        <OptionBox card={card} location={'main'}/>
+        <OptionBox card={card} location={"main"} />
       </div>
       <div className="flex justify-end items-center p-2 border-t border-slate-400">
         <CopyButton onClick={handleCopyQuestion} />

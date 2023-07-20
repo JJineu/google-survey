@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
 import { useAppSelector } from "../hooks/useRedux";
-import PreviewQuestion from "../components/PreviewQuestion";
+import PreviewQuestion from "../components/Preview/PreviewQuestion";
 import { useNavigate } from "react-router-dom";
+import QuestionList from "../components/QuestionList";
 
 export default function Preview() {
   const router = useNavigate();
@@ -19,11 +20,11 @@ export default function Preview() {
             <div className="text-2xl mb-2">{survey.title}</div>
             <div className="pb-2">{survey.detail}</div>
             <div className="text-red-500 pt-10 border-t border-slate-400">
-              * 필수항목
+              * 표시는 필수 질문임
             </div>
           </div>
           {/* questions */}
-          <div className="">
+          <div className="flex flex-col">
             {question &&
               question.map((q) => <PreviewQuestion key={q.id} question={q} />)}
           </div>

@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 
-type location = "main" | "preview" | "result";
+export type location = "main" | "preview" | "result";
 type Props = {
   type: number;
   questionId: string;
@@ -19,7 +19,7 @@ export default function AnswerOption({
 
   const handleAnswerOption = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(
-      questionActions.setOptionOfAnswer({
+      questionActions.setAnswer({
         id: ques?.id,
         content: e.target.value,
       })
@@ -41,19 +41,14 @@ export default function AnswerOption({
         return (
           <input
             type="text"
-            placeholder="내 답변"
-            value={ques?.optionOfAnswer}
+            placeholder="답변"
+            value={ques?.answer}
             onChange={handleAnswerOption}
           />
         );
       case "result":
         return (
-          <input
-            type="text"
-            placeholder=""
-            value={ques?.optionOfAnswer}
-            disabled
-          />
+          <input type="text" placeholder="" value={ques?.answer} disabled />
         );
       default:
         return;

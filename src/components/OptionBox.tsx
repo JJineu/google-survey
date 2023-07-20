@@ -1,22 +1,13 @@
-import { useAppDispatch } from "../hooks/useRedux";
-import { Question, QuestionOption, QuestionType } from "../types/survey";
-import MulipleChoice from "./QuestionOption/MulipleChoice";
-import CheckBox from "./QuestionOption/CheckBox";
-import DropDown from "./QuestionOption/DropDown";
-import AnswerOption from "./QuestionOption/AnswerOption";
+import { Question, QuestionType } from "../types/survey";
+import AnswerOption, { location } from "./QuestionOption/AnswerOption";
 import ListOption from "./QuestionOption/ListOption";
 
 type Props = {
-  // cardId: string;
-  // type: number;
-  // options?: QuestionOption[];
-  location: string;
+  location: location;
   card: Question;
 };
-// export default function OptionBox({ cardId, type, options }: Props) {
 export default function OptionBox({ card, location }: Props) {
   const { type, options, id: cardId } = card;
-  const dispatch = useAppDispatch();
 
   const getOptionList = (type: number) => {
     const lastOptionIndex = (options?.length || 0) + 1;
@@ -25,7 +16,7 @@ export default function OptionBox({ card, location }: Props) {
         <ListOption
           type={type}
           questionId={cardId}
-          // location="main"
+          location={location}
           optionId={option.id}
           content={option.content}
           isLast={false}
@@ -35,7 +26,7 @@ export default function OptionBox({ card, location }: Props) {
         <ListOption
           type={type}
           questionId={cardId}
-          // location="main"
+          location={location}
           optionId={lastOptionIndex}
           content="옵션 추가"
           isLast={true}
@@ -47,9 +38,13 @@ export default function OptionBox({ card, location }: Props) {
   const switchOption = () => {
     switch (type) {
       case QuestionType.SHORT_ANSWER:
-        return <AnswerOption type={type} questionId={cardId} location="main" />;
+        return (
+          <AnswerOption type={type} questionId={cardId} location={location} />
+        );
       case QuestionType.LONG_ANSWER:
-        return <AnswerOption type={type} questionId={cardId} location="main" />;
+        return (
+          <AnswerOption type={type} questionId={cardId} location={location} />
+        );
       case QuestionType.MULTIPLE_CHOICE:
       case QuestionType.CHECK_BOX:
       case QuestionType.DROP_DOWN:

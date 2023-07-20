@@ -14,8 +14,8 @@ const initialState: Question[] = [
       },
     ],
     isNecessary: false,
-    optionOfAnswer: "",
-    optionOfList: [],
+    answer: "",
+    answerList: [],
   },
 ];
 
@@ -55,15 +55,7 @@ export const question = createSlice({
       );
       state[questionIdx].options = options;
     },
-    // setOption: (state, action) => {
-    //   const { id, optionId, content } = action.payload;
-    // },
-    setOptionOfAnswer: (state, action) => {
-      const { id, content } = action.payload;
-      const question = state.find((s) => s.id === id);
-      question && (question.optionOfAnswer = content);
-    },
-    setOptionOfList: (state, action) => {
+    setOptions: (state, action) => {
       const { id, optionId, content } = action.payload;
       const questionIdx = state.findIndex((s) => s.id === id);
       const option = state[questionIdx].options.find((o) => o.id === optionId);
@@ -76,6 +68,29 @@ export const question = createSlice({
     deleteQuestion: (state, action) => {
       const id = action.payload;
       return state.filter((s) => s.id !== id);
+    },
+    setAnswer: (state, action) => {
+      const { id, content } = action.payload;
+      const question = state.find((s) => s.id === id);
+      question && (question.answer = content);
+    },
+    setAnswerList: (state, action) => {
+      const { id, optionId, content } = action.payload;
+      const questionIdx = state.findIndex((s) => s.id === id);
+      const answerList = state[questionIdx].answerList;
+      if (answerList.find((e) => e === optionId)) {
+        state[questionIdx].answerList = answerList.filter(
+          (e) => e !== optionId
+        );
+      } else {
+        state[questionIdx].answerList.push(optionId);
+      }
+    },
+    resetAnswer: (state, action) => {
+      state.map((s) => {
+        s.answer = "";
+        s.answerList = [];
+      });
     },
   },
 });

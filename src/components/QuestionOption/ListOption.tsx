@@ -3,9 +3,8 @@ import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import ClearButton from "../icons/ClearButton";
 import { QuestionType } from "../../types/survey";
-import { Radio } from "@mui/material";
+import { location } from "./AnswerOption";
 
-type location = "main" | "preview" | "result";
 type Props = {
   type: number;
   questionId: string;
@@ -38,7 +37,7 @@ export default function ListOption({
   const handleListOption = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     dispatch(
-      questionActions.setOptionOfList({
+      questionActions.setOptions({
         id: questionId,
         optionId: optionId,
         content: e.target.value,
@@ -46,44 +45,6 @@ export default function ListOption({
     );
   };
 
-  // const setLocation = (location: location) => {
-  //   switch (location) {
-  //     case "main":
-  //       return (
-  //         <>
-  //           <input
-  //             type="text"
-  //             value={content}
-  //             onChange={handleListOption}
-  //             onClick={handleAddOption}
-  //           />
-  //           {!isLast && <ClearButton onClick={handledeleteOption} />}
-  //         </>
-  //       );
-  //     case "preview":
-  //       return <div>{content}</div>;
-  //     case "result":
-  //       return <div>{content}</div>;
-  //     default:
-  //       return;
-  //   }
-  // };
-
-  // // const [selectedValue, setSelectedValue] = React.useState('a');
-  // // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  // //   setSelectedValue(event.target.value);
-  // // };
-  // const controlProps = (item: string) => ({
-  //   // checked: selectedValue === item,
-  //   // onChange: handleChange,
-  //   value: item,
-  //   name: "color-radio-button-demo",
-  //   inputProps: { "aria-label": item },
-  // });
-
-  // {
-  //   /* <Radio {...controlProps("b")} color="secondary" disabled /> */
-  // }
   const setSelectButton = () => {
     switch (type) {
       case QuestionType.MULTIPLE_CHOICE:
@@ -91,8 +52,7 @@ export default function ListOption({
           <input
             type="radio"
             className="w-5 h-6  accent-purple-500 hover:bg-gray-100 "
-            // checked={check}
-            // onChange={!check}
+            disabled
           />
         );
       case QuestionType.CHECK_BOX:
@@ -100,8 +60,7 @@ export default function ListOption({
           <input
             type="checkbox"
             className="w-5 h-6 accent-purple-500 hover:bg-gray-100 rounded-full"
-            // checked={check}
-            // onChange={!check}
+            disabled
           />
         );
       case QuestionType.DROP_DOWN:
@@ -123,7 +82,9 @@ export default function ListOption({
         onChange={handleListOption}
         onClick={handleAddOption}
       />
-      {!isLast && <ClearButton onClick={handledeleteOption} />}
+      {!isLast && location === "main" && (
+        <ClearButton onClick={handledeleteOption} />
+      )}
     </div>
   );
 }
