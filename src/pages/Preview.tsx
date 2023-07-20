@@ -1,15 +1,18 @@
 import { Button } from "@mui/material";
-import { useAppSelector } from "../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import PreviewQuestion from "../components/Preview/PreviewQuestion";
 import { useNavigate } from "react-router-dom";
-import QuestionList from "../components/QuestionList";
+import { questionActions } from "../store/slice/question";
 
 export default function Preview() {
   const router = useNavigate();
+  const dispatch = useAppDispatch();
   const handleSubmit = () => {
     router("/result");
   };
-  const handleReset = () => {};
+  const handleReset = () => {
+    dispatch(questionActions.resetAnswer(question));
+  };
   const { survey, question } = useAppSelector((state) => state);
   return (
     <div className="w-full overflow-x-hidden px-10">
