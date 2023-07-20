@@ -7,14 +7,15 @@ export default function Survey() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    dispatch(surveyAction.setSurvey({ [name]: value }));
+    dispatch(surveyAction.setSurvey({ ...survey, [name]: value }));
+    console.log('survey')
   };
 
   return (
-    <div className="flex flex-col p-5">
+    <div className="flex flex-col p-5 bg-white ">
       <input
         type="text"
-        className="text-2xl mb-2"
+        className="text-3xl mb-4"
         placeholder="제목 없는 설문지"
         name="title"
         value={survey.title}

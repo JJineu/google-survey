@@ -9,6 +9,8 @@ export type Question = {
   title: string;
   options: QuestionOption[];
   isNecessary: boolean;
+  optionOfAnswer: string;
+  optionOfList: Array<number>;
 };
 
 export type QuestionOption = {

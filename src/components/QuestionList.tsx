@@ -7,11 +7,12 @@ export default function QuestionList() {
   return (
     <div className="w-full">
       <ul>
-        {question.map((q, idx) => (
-          <li key={idx} className="my-3">
-            <QuestionCard card={q} />
-          </li>
-        ))}
+        {question &&
+          question.map((q, idx) => (
+            <li key={q.id} className="my-3 py-3 bg-white ">
+              <QuestionCard card={q} />
+            </li>
+          ))}
       </ul>
     </div>
   );

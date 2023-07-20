@@ -7,7 +7,7 @@ type Props = {
 export default function PreviewButton({ onClick }: Props) {
   return (
     <div>
-      <IconButton onClick={() => onClick()} aria-label="preview">
+      <IconButton onClick={onClick} aria-label="preview">
         <VisibilityOutlinedIcon />
       </IconButton>
     </div>

@@ -14,6 +14,8 @@ const initialState: Question[] = [
       },
     ],
     isNecessary: false,
+    optionOfAnswer: "",
+    optionOfList: [],
   },
 ];
 
@@ -36,10 +38,33 @@ export const question = createSlice({
       const question = state.find((s) => s.id === id);
       question && (question.type = typeId);
     },
-    addOption: (state, action) => {},
-    deleteOption: (state, action) => {},
+    addOption: (state, action) => {
+      const { id, optionId } = action.payload;
+      const question = state.find((s) => s.id === id);
+      question &&
+        question.options.push({
+          id: optionId,
+          content: `옵션 ${optionId}`,
+        });
+    },
+    deleteOption: (state, action) => {
+      const { id, optionId } = action.payload;
+      const questionIdx = state.findIndex((s) => s.id === id);
+      state[questionIdx].options.filter((o) => o.id !== optionId);
+    },
     setOption: (state, action) => {
       const { id, optionId, content } = action.payload;
+    },
+    setOptionOfAnswer: (state, action) => {
+      const { id, content } = action.payload;
+      const question = state.find((s) => s.id === id);
+      question && (question.optionOfAnswer = content);
+    },
+    setOptionOfList: (state, action) => {
+      const { id, optionId, content } = action.payload;
+      const questionIdx = state.findIndex((s) => s.id === id);
+      const option = state[questionIdx].options.find((o) => o.id === optionId);
+      option && (option.content = content);
     },
     addQuestion: (state, action) => {
       const newQuestion = action.payload;

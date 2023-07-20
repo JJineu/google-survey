@@ -16,6 +16,8 @@ export default function SideBar() {
       },
     ],
     isNecessary: false,
+    optionOfAnswer: "",
+    optionOfList: [],
   });
 
   const handleAddQuestion = () => {
