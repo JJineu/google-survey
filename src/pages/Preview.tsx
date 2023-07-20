@@ -8,6 +8,7 @@ export default function Preview() {
   const router = useNavigate();
   const dispatch = useAppDispatch();
   const handleSubmit = () => {
+    // 필수 항목 답변 없을시
     router("/result");
   };
   const handleReset = () => {

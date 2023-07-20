@@ -1,5 +1,5 @@
 import { useAppSelector } from "../hooks/useRedux";
-import PreviewQuestion from "../components/Preview/PreviewQuestion";
+import ResultBox from "../components/Preview/ResultBox";
 
 export default function Result() {
   const { survey, question } = useAppSelector((state) => state);
@@ -11,14 +11,14 @@ export default function Result() {
           <div className="flex flex-col p-5 bg-white">
             <div className="text-2xl mb-2">{survey.title}</div>
             <div className="pb-2">{survey.detail}</div>
-            <div className="text-red-500 pt-10 border-t border-slate-400">
-              * 표시는 필수 질문임
+            <div className="text-blue-500 pt-10 border-t border-slate-400">
+              응답이 기록되었습니다.
             </div>
           </div>
           {/* questions */}
           <div className="">
             {question &&
-              question.map((q) => <PreviewQuestion key={q.id} question={q} />)}
+              question.map((q) => <ResultBox key={q.id} question={q} />)}
           </div>
         </div>
       </div>
