@@ -8,19 +8,28 @@ export default function Preview() {
   const router = useNavigate();
   const dispatch = useAppDispatch();
   const handleSubmit = () => {
-    // 필수 항목 답변 없을시
-    router("/result");
+    let isFilled = true;
+    question.forEach((q) => {
+      if (q.isNecessary && !q.answer && q.answerList.length === 0) {
+        isFilled = false;
+      }
+    });
+    if (isFilled) {
+      router("/result");
+    } else {
+      alert("필수 질문에 대한 답변을 채워주세요");
+    }
   };
   const handleReset = () => {
     dispatch(questionActions.resetAnswer(question));
   };
   const { survey, question } = useAppSelector((state) => state);
   return (
-    <div className="w-full overflow-x-hidden px-10">
+    <div className="w-4/5 mx-auto overflow-x-hidden px-10">
       <div className="flex flex-col p-5 mx-auto justify-center items-center  max-w-screen-md ">
         <div className="w-full flex flex-col mx-3">
           {/* survey */}
-          <div className="flex flex-col p-5 bg-white">
+          <div className="flex flex-col p-5 bg-white border-2 rounded-md ">
             <div className="text-2xl mb-2">{survey.title}</div>
             <div className="pb-2">{survey.detail}</div>
             <div className="text-red-500 pt-10 border-t border-slate-400">

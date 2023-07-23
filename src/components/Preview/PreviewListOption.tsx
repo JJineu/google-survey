@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import { Question, QuestionType } from "../../types/survey";
@@ -19,8 +19,12 @@ export default function PreviewListOption({
 }: Props) {
   const dispatch = useAppDispatch();
   const handleAnswerOfMultipleChoice = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(questionActions.setAnswer({ id: questionId, content: optionId }));
-    console.log(question.answer, e.target.value);
+    dispatch(
+      questionActions.setAnswer({
+        id: questionId,
+        content: optionId.toString(),
+      })
+    );
   };
 
   const handleAnswerOfCheckBox = () => {
@@ -29,8 +33,8 @@ export default function PreviewListOption({
     );
   };
   // useEffect(() => {
-  //   console.log("Updated answerList:", question.answerList);
-  // }, [question.answerList]);
+  //   console.log("Updated answerList:", question.answer);
+  // }, [question.answer]);
 
   const setSelectButton = () => {
     switch (type) {
@@ -72,7 +76,6 @@ export default function PreviewListOption({
         value={content}
         disabled
       />
-      {/* <div className="h-10 w-full bg-white">{content}</div> */}
     </div>
   );
 }

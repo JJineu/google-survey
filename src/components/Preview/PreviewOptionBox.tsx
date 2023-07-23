@@ -10,6 +10,7 @@ type Props = {
   question: Question;
 };
 export default function PreviewOptionBox({ question }: Props) {
+  const dispatch = useAppDispatch();
   const { type, options, id } = question;
 
   const getOptionList = (type: number) => {
@@ -25,16 +26,13 @@ export default function PreviewOptionBox({ question }: Props) {
     return optionList;
   };
 
-  const dispatch = useAppDispatch();
   const handleAnswerOfDropDown = (e: SelectChangeEvent) => {
     dispatch(questionActions.setAnswer({ id, content: e.target.value }));
   };
+
   const switchOption = () => {
     switch (type) {
       case QuestionType.SHORT_ANSWER:
-        return (
-          <AnswerOption type={type} questionId={id} location={"preview"} />
-        );
       case QuestionType.LONG_ANSWER:
         return (
           <AnswerOption type={type} questionId={id} location={"preview"} />

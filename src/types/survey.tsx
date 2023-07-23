@@ -11,6 +11,7 @@ export type Question = {
   isNecessary: boolean;
   answer: string;
   answerList: number[];
+  dragId: number;
 };
 
 export type QuestionOption = {
@@ -25,3 +26,5 @@ export enum QuestionType {
   CHECK_BOX,
   DROP_DOWN,
 }
+
+export type location = "main" | "preview" | "result";

@@ -1,8 +1,8 @@
 import { ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
+import { location } from "../../types/survey";
 
-export type location = "main" | "preview" | "result";
 type Props = {
   type: number;
   questionId: string;
@@ -45,10 +45,6 @@ export default function AnswerOption({
             value={ques?.answer}
             onChange={handleAnswerOption}
           />
-        );
-      case "result":
-        return (
-          <input type="text" placeholder="" value={ques?.answer} disabled />
         );
       default:
         return;

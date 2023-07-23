@@ -1,12 +1,11 @@
 import { Question, QuestionType } from "../types/survey";
-import AnswerOption, { location } from "./QuestionOption/AnswerOption";
+import AnswerOption from "./QuestionOption/AnswerOption";
 import ListOption from "./QuestionOption/ListOption";
 
 type Props = {
-  location: location;
   card: Question;
 };
-export default function OptionBox({ card, location }: Props) {
+export default function OptionBox({ card }: Props) {
   const { type, options, id: cardId } = card;
 
   const getOptionList = (type: number) => {
@@ -14,9 +13,9 @@ export default function OptionBox({ card, location }: Props) {
     const optionList = options
       ?.map((option) => (
         <ListOption
+          key={`${cardId}, ${option.id}`}
           type={type}
           questionId={cardId}
-          location={location}
           optionId={option.id}
           content={option.content}
           isLast={false}
@@ -24,9 +23,9 @@ export default function OptionBox({ card, location }: Props) {
       ))
       .concat(
         <ListOption
+          key={`${cardId}, ${lastOptionIndex}`}
           type={type}
           questionId={cardId}
-          location={location}
           optionId={lastOptionIndex}
           content="옵션 추가"
           isLast={true}
@@ -38,12 +37,9 @@ export default function OptionBox({ card, location }: Props) {
   const switchOption = () => {
     switch (type) {
       case QuestionType.SHORT_ANSWER:
-        return (
-          <AnswerOption type={type} questionId={cardId} location={location} />
-        );
       case QuestionType.LONG_ANSWER:
         return (
-          <AnswerOption type={type} questionId={cardId} location={location} />
+          <AnswerOption type={type} questionId={cardId} location={"main"} />
         );
       case QuestionType.MULTIPLE_CHOICE:
       case QuestionType.CHECK_BOX:
@@ -53,5 +49,5 @@ export default function OptionBox({ card, location }: Props) {
         return;
     }
   };
-  return <div className="my-4 w-full">{switchOption()}</div>;
+  return <div className="my-4 w-full ">{switchOption()}</div>;
 }

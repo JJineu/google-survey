@@ -3,12 +3,10 @@ import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import ClearButton from "../icons/ClearButton";
 import { QuestionType } from "../../types/survey";
-import { location } from "./AnswerOption";
 
 type Props = {
   type: number;
   questionId: string;
-  location?: location;
   optionId: number;
   content: string;
   isLast: boolean;
@@ -16,32 +14,30 @@ type Props = {
 export default function ListOption({
   type,
   questionId,
-  location = "main",
   optionId,
   content,
-  isLast = false,
+  isLast,
 }: Props) {
   const dispatch = useAppDispatch();
+
   const handleAddOption = () => {
     isLast &&
       dispatch(
         questionActions.addOption({ id: questionId, optionId: optionId })
       );
   };
-  const handledeleteOption = () => {
-    console.log("delete-O", optionId);
-    dispatch(
-      questionActions.deleteOption({ id: questionId, optionId: optionId })
-    );
-  };
   const handleListOption = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     dispatch(
       questionActions.setOptions({
         id: questionId,
         optionId: optionId,
         content: e.target.value,
       })
+    );
+  };
+  const handledeleteOption = () => {
+    dispatch(
+      questionActions.deleteOption({ id: questionId, optionId: optionId })
     );
   };
 
@@ -82,9 +78,7 @@ export default function ListOption({
         onChange={handleListOption}
         onClick={handleAddOption}
       />
-      {!isLast && location === "main" && (
-        <ClearButton onClick={handledeleteOption} />
-      )}
+      {!isLast && <ClearButton onClick={handledeleteOption} />}
     </div>
   );
 }

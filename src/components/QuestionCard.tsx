@@ -1,4 +1,4 @@
-import { useAppDispatch } from "../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { questionActions } from "../store/slice/question";
 import { Question, QuestionType } from "../types/survey";
 import SelectBox from "./SelectBox";
@@ -6,7 +6,7 @@ import CopyButton from "./icons/CopyButton";
 import DeleteButton from "./icons/DeleteButton";
 import ToggleButton from "./icons/ToggleButton";
 import { v4 } from "uuid";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import OptionBox from "./OptionBox";
 
@@ -20,9 +20,15 @@ const menu = [
 
 type Props = {
   card: Question;
+  key: number;
 };
-export default function QuestionCard({ card }: Props) {
+// export default function QuestionCard({ card }: Props) {
+export default function QuestionCard({ key, card }: Props) {
   const dispatch = useAppDispatch();
+  
+  // useEffect(() => {
+  //   dispatch(questionActions.changeQuestionIdx({ id: card.id, dragId: key }));
+  // }, [card.id, dispatch, key]);
 
   const copyQuestion = (newId: string) => {
     return { ...card, id: newId };
@@ -68,7 +74,7 @@ export default function QuestionCard({ card }: Props) {
         </div>
       </div>
       <div className="flex">
-        <OptionBox card={card} location={"main"} />
+        <OptionBox card={card} />
       </div>
       <div className="flex justify-end items-center p-2 border-t border-slate-400">
         <CopyButton onClick={handleCopyQuestion} />

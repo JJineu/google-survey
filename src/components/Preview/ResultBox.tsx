@@ -1,18 +1,16 @@
 import { Question, QuestionType } from "../../types/survey";
-import AnswerOption from "../QuestionOption/AnswerOption";
 
 type Props = {
   question: Question;
 };
 export default function ResultBox({ question }: Props) {
-  const { id, type, answer, answerList } = question;
+  const { type, answer, answerList } = question;
 
   const switchOption = () => {
     switch (type) {
       case QuestionType.SHORT_ANSWER:
-        return <AnswerOption type={type} questionId={id} location={"result"} />;
       case QuestionType.LONG_ANSWER:
-        return <AnswerOption type={type} questionId={id} location={"result"} />;
+        return <div>{answer}</div>;
       case QuestionType.MULTIPLE_CHOICE:
         return <div>{answer}</div>;
       case QuestionType.CHECK_BOX:
@@ -25,7 +23,7 @@ export default function ResultBox({ question }: Props) {
   };
 
   return (
-    <div className="mt-3 p-5 bg-white">
+    <div className="mt-3 p-5 bg-white border-2 rounded-md">
       <span className="">{question.title}</span>
       {question.isNecessary && <span className=" text-red-500"> *</span>}
       <div className="my-4 w-full">{switchOption()}</div>

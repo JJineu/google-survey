@@ -11,7 +11,7 @@ export default function Survey() {
   };
 
   return (
-    <div className="flex flex-col p-5 bg-white ">
+    <div className="flex flex-col p-5 bg-white border-2 rounded-md focus-within:border-l-red-400">
       <input
         type="text"
         className="text-3xl mb-4 focus:border-b-2 focus:border-purple-500 outline-none"

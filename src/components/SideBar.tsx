@@ -18,6 +18,7 @@ export default function SideBar() {
     isNecessary: false,
     answer: "",
     answerList: [],
+    dragId: 99,
   });
 
   const handleAddQuestion = () => {
@@ -26,7 +27,7 @@ export default function SideBar() {
   };
 
   return (
-    <div>
+    <div className="bg-white rounded-md border-2">
       <AddButton onClick={handleAddQuestion} />
     </div>
   );

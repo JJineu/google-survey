@@ -16,6 +16,7 @@ const initialState: Question[] = [
     isNecessary: false,
     answer: "",
     answerList: [],
+    dragId: 0,
   },
 ];
 
@@ -75,7 +76,7 @@ export const question = createSlice({
       question && (question.answer = content);
     },
     setAnswerList: (state, action) => {
-      const { id, optionId, content } = action.payload;
+      const { id, optionId } = action.payload;
       const questionIdx = state.findIndex((s) => s.id === id);
       const answerList = state[questionIdx].answerList;
       if (answerList.find((e) => e === optionId)) {
@@ -91,6 +92,16 @@ export const question = createSlice({
         s.answer = "";
         s.answerList = [];
       });
+    },
+    changeQuestionIdx: (state, action) => {
+      const { id, dragId } = action.payload;
+      const questionIndex = state.findIndex((q) => q.id === id);
+      // const dragIndex = state.findIndex((q) => q.id === dragId);
+      questionIndex && (state[questionIndex].dragId = dragId);
+      // if (questionIndex !== -1 && dragIndex !== -1) {
+      //   const [question] = state.splice(questionIndex, 1);
+      //   state.splice(dragIndex, 0, question);
+      // }
     },
   },
 });
