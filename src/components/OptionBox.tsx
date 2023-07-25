@@ -1,33 +1,34 @@
-import { Question, QuestionType } from "../types/survey";
-import AnswerOption, { location } from "./QuestionOption/AnswerOption";
+import { QuestionOption, QuestionType } from "../types/survey";
+import AnswerOption from "./QuestionOption/AnswerOption";
 import ListOption from "./QuestionOption/ListOption";
 
 type Props = {
-  location: location;
-  card: Question;
+  cardId: string;
+  type: number;
+  options: QuestionOption[];
 };
-export default function OptionBox({ card, location }: Props) {
-  const { type, options, id: cardId } = card;
+export default function OptionBox({ type, options, cardId }: Props) {
 
   const getOptionList = (type: number) => {
     const lastOptionIndex = (options?.length || 0) + 1;
     const optionList = options
-      ?.map((option) => (
+      ?.map((option, idx) => (
         <ListOption
+          key={`${cardId}, ${option.id}`}
+          idx={idx + 1}
           type={type}
           questionId={cardId}
-          location={location}
-          optionId={option.id}
+          id={option.id}
           content={option.content}
           isLast={false}
         />
       ))
       .concat(
         <ListOption
+          key={`${cardId}, ${lastOptionIndex}`}
+          idx={lastOptionIndex}
           type={type}
           questionId={cardId}
-          location={location}
-          optionId={lastOptionIndex}
           content="옵션 추가"
           isLast={true}
         />
@@ -38,12 +39,9 @@ export default function OptionBox({ card, location }: Props) {
   const switchOption = () => {
     switch (type) {
       case QuestionType.SHORT_ANSWER:
-        return (
-          <AnswerOption type={type} questionId={cardId} location={location} />
-        );
       case QuestionType.LONG_ANSWER:
         return (
-          <AnswerOption type={type} questionId={cardId} location={location} />
+          <AnswerOption type={type} questionId={cardId} location={"main"} />
         );
       case QuestionType.MULTIPLE_CHOICE:
       case QuestionType.CHECK_BOX:
@@ -53,5 +51,5 @@ export default function OptionBox({ card, location }: Props) {
         return;
     }
   };
-  return <div className="my-4 w-full">{switchOption()}</div>;
+  return <div className="my-4 w-full ">{switchOption()}</div>;
 }

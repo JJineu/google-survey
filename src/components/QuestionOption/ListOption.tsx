@@ -1,46 +1,64 @@
-import { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import ClearButton from "../icons/ClearButton";
 import { QuestionType } from "../../types/survey";
-import { location } from "./AnswerOption";
+import useDebounce from "../../hooks/useDebounce";
+import { v4 } from "uuid";
 
 type Props = {
   type: number;
+  idx: number;
   questionId: string;
-  location?: location;
-  optionId: number;
+  id?: string;
   content: string;
   isLast: boolean;
 };
 export default function ListOption({
   type,
+  idx,
   questionId,
-  location = "main",
-  optionId,
+  id,
   content,
-  isLast = false,
+  isLast,
 }: Props) {
   const dispatch = useAppDispatch();
+
+  const [optionContent, setOptionContent] = useState(content);
+  const debouncedState = useDebounce(optionContent);
+
+  useEffect(() => {
+    if (id && questionId && content) {
+      dispatch(
+        questionActions.setOptionContent({
+          oId: id,
+          id: questionId,
+          content: debouncedState,
+        })
+      );
+    }
+  }, [content, debouncedState, dispatch, id, questionId]);
+
+  const handleOptionContent = (e: ChangeEvent<HTMLInputElement>) => {
+    setOptionContent(e.target.value);
+  };
+
   const handleAddOption = () => {
+    const oId = v4();
     isLast &&
       dispatch(
-        questionActions.addOption({ id: questionId, optionId: optionId })
+        questionActions.addOption({
+          id: questionId,
+          oId,
+          idx,
+        })
       );
   };
   const handledeleteOption = () => {
-    console.log("delete-O", optionId);
     dispatch(
-      questionActions.deleteOption({ id: questionId, optionId: optionId })
-    );
-  };
-  const handleListOption = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    dispatch(
-      questionActions.setOptions({
+      questionActions.deleteOption({
         id: questionId,
-        optionId: optionId,
-        content: e.target.value,
+        oId: id,
       })
     );
   };
@@ -64,7 +82,7 @@ export default function ListOption({
           />
         );
       case QuestionType.DROP_DOWN:
-        return <div className="text-sm">{optionId}</div>;
+        return <div className="text-sm">{idx}</div>;
       default:
         return;
     }
@@ -78,13 +96,11 @@ export default function ListOption({
           isLast ? "text-sm text-slate-500" : "w-full"
         }`}
         type="text"
-        value={content}
-        onChange={handleListOption}
+        value={optionContent}
+        onChange={handleOptionContent}
         onClick={handleAddOption}
       />
-      {!isLast && location === "main" && (
-        <ClearButton onClick={handledeleteOption} />
-      )}
+      {!isLast && <ClearButton onClick={handledeleteOption} />}
     </div>
   );
 }

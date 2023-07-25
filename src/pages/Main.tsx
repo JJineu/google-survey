@@ -4,7 +4,7 @@ import SideBar from "../components/SideBar";
 import PreviewButton from "../components/icons/PreviewButton";
 import { useNavigate } from "react-router-dom";
 
-export default function Main() {
+export default function MainPage() {
   const router = useNavigate();
   const onPreview = () => {
     router("/preview");

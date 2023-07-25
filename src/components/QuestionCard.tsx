@@ -6,9 +6,11 @@ import CopyButton from "./icons/CopyButton";
 import DeleteButton from "./icons/DeleteButton";
 import ToggleButton from "./icons/ToggleButton";
 import { v4 } from "uuid";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import OptionBox from "./OptionBox";
+import React from "react";
+import useDebounce from "../hooks/useDebounce";
 
 const menu = [
   { id: QuestionType.SHORT_ANSWER, content: "단답형" },
@@ -21,18 +23,25 @@ const menu = [
 type Props = {
   card: Question;
 };
-export default function QuestionCard({ card }: Props) {
+function QuestionCard({ card }: Props) {
   const dispatch = useAppDispatch();
+  const [text, setText] = useState("");
+  const debouncedState = useDebounce(text);
+
+  useEffect(() => {
+    dispatch(
+      questionActions.setQuestion({ id: card.id, title: debouncedState })
+    );
+  }, [card.id, debouncedState, dispatch]);
 
   const copyQuestion = (newId: string) => {
     return { ...card, id: newId };
   };
 
-  const handleQuestionChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      questionActions.setQuestion({ id: card.id, title: e.target.value })
-    );
+  const handleQuestionText = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
   };
+
   const handleQuestionType = (e: SelectChangeEvent) => {
     dispatch(
       questionActions.changeType({ id: card.id, typeId: e.target.value })
@@ -43,12 +52,15 @@ export default function QuestionCard({ card }: Props) {
     const id = v4();
     dispatch(questionActions.addQuestion(copyQuestion(id)));
   };
+
   const handleDeleteQuestion = () => {
     dispatch(questionActions.deleteQuestion(card.id));
   };
+
   const handleNecessary = () => {
     dispatch(questionActions.setNecessary(card.id));
   };
+
   return (
     <div className="w-full px-5">
       <div className="flex">
@@ -56,8 +68,8 @@ export default function QuestionCard({ card }: Props) {
           className="w-full text-l p-4 mr-3 bg-slate-100 focus:border-b-2 focus:border-purple-500 outline-none"
           type="text"
           placeholder="질문"
-          value={card.title}
-          onChange={handleQuestionChange}
+          value={text}
+          onChange={handleQuestionText}
         />
         <div className="w-60">
           <SelectBox
@@ -68,7 +80,7 @@ export default function QuestionCard({ card }: Props) {
         </div>
       </div>
       <div className="flex">
-        <OptionBox card={card} location={"main"} />
+        <OptionBox type={card.type} options={card.options} cardId={card.id} />
       </div>
       <div className="flex justify-end items-center p-2 border-t border-slate-400">
         <CopyButton onClick={handleCopyQuestion} />
@@ -78,3 +90,5 @@ export default function QuestionCard({ card }: Props) {
     </div>
   );
 }
+
+export default React.memo(QuestionCard);

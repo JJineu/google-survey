@@ -7,7 +7,7 @@ import {
 
 type Props = {
   value: string;
-  menu: { id: number; content: string }[];
+  menu: { id: number | string; content: string }[];
   onChange: (e: SelectChangeEvent) => void;
 };
 export default function SelectBox({ value, menu, onChange }: Props) {

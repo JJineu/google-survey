@@ -2,35 +2,49 @@ import { ChangeEvent } from "react";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import { Question, QuestionType } from "../../types/survey";
+import SelectBox from "../SelectBox";
+import { SelectChangeEvent } from "@mui/material";
 
 type Props = {
   type: number;
   questionId: string;
   question: Question;
-  optionId: number;
+  id: string;
   content: string;
 };
 export default function PreviewListOption({
   type,
   questionId,
   question,
-  optionId,
+  id,
   content,
 }: Props) {
   const dispatch = useAppDispatch();
   const handleAnswerOfMultipleChoice = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(questionActions.setAnswer({ id: questionId, content: optionId }));
-    console.log(question.answer, e.target.value);
+    dispatch(
+      questionActions.setAnswerListOne({
+        id: questionId,
+        oId: id,
+        content,
+      })
+    );
   };
 
   const handleAnswerOfCheckBox = () => {
     dispatch(
-      questionActions.setAnswerList({ id: questionId, optionId, content })
+      questionActions.setAnswerList({ id: questionId, oId: id, content })
     );
   };
-  // useEffect(() => {
-  //   console.log("Updated answerList:", question.answerList);
-  // }, [question.answerList]);
+
+  const handleAnswerOfDropDown = (e: SelectChangeEvent) => {
+    dispatch(
+      questionActions.setAnswerListOne({
+        id: questionId,
+        oId: e.target.value,
+        content,
+      })
+    );
+  };
 
   const setSelectButton = () => {
     switch (type) {
@@ -39,9 +53,13 @@ export default function PreviewListOption({
           <input
             type="radio"
             className="w-5 h-6  accent-purple-500 hover:bg-gray-100 "
-            checked={question.answer.toString() === optionId.toString()}
+            checked={
+              question.answerList.find((answer) => answer.id === id) != null
+                ? true
+                : false
+            }
             onChange={handleAnswerOfMultipleChoice}
-            value={question.answer}
+            value={question.answerList[0]?.id}
           />
         );
       case QuestionType.CHECK_BOX:
@@ -50,14 +68,21 @@ export default function PreviewListOption({
             type="checkbox"
             className="w-5 h-6 accent-purple-500 hover:bg-gray-100 rounded-full"
             checked={
-              question.answerList.find((arr) => arr === optionId) != null
+              question.answerList.find((answer) => answer.id === id) != null
                 ? true
                 : false
             }
             onChange={handleAnswerOfCheckBox}
           />
         );
-
+      case QuestionType.DROP_DOWN:
+        return (
+          <SelectBox
+            value={question.answerList[0].id}
+            menu={question.options}
+            onChange={handleAnswerOfDropDown}
+          />
+        );
       default:
         return;
     }
@@ -72,7 +97,6 @@ export default function PreviewListOption({
         value={content}
         disabled
       />
-      {/* <div className="h-10 w-full bg-white">{content}</div> */}
     </div>
   );
 }

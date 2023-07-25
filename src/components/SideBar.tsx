@@ -11,7 +11,7 @@ export default function SideBar() {
     type: 2,
     options: [
       {
-        id: 1,
+        id: v4(),
         content: "옵션 1",
       },
     ],
@@ -26,7 +26,7 @@ export default function SideBar() {
   };
 
   return (
-    <div>
+    <div className="bg-white rounded-md border-2">
       <AddButton onClick={handleAddQuestion} />
     </div>
   );

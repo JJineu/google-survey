@@ -10,11 +10,12 @@ export type Question = {
   options: QuestionOption[];
   isNecessary: boolean;
   answer: string;
-  answerList: number[];
+  answerList: QuestionOption[];
+  dragId: number;
 };
 
 export type QuestionOption = {
-  id: number;
+  id: string;
   content: string;
 };
 
@@ -25,3 +26,5 @@ export enum QuestionType {
   CHECK_BOX,
   DROP_DOWN,
 }
+
+export type location = "main" | "preview" | "result";
