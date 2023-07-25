@@ -9,8 +9,7 @@ const initialState: Question[] = [
     title: "제목없는 질문",
     options: [
       {
-        _id: v4(),
-        id: 1,
+        id: v4(),
         content: "옵션 1",
       },
     ],
@@ -27,99 +26,90 @@ export const question = createSlice({
   reducers: {
     setQuestion: (state, action) => {
       const { id, title } = action.payload;
-      const question = state.find((s) => s.id === id);
-      question && (question.title = title);
+      const question = state.find((q) => q.id === id);
+      if (question) question.title = title;
     },
     setNecessary: (state, action) => {
       const id = action.payload;
-      const question = state.find((s) => s.id === id);
-      question && (question.isNecessary = !question.isNecessary);
+      const question = state.find((q) => q.id === id);
+      if (question) question.isNecessary = !question.isNecessary;
     },
     changeType: (state, action) => {
       const { id, typeId } = action.payload;
-      const question = state.find((s) => s.id === id);
-      question && (question.type = typeId);
+      const question = state.find((q) => q.id === id);
+      if (question) question.type = typeId;
     },
     addOption: (state, action) => {
-      const { id, _id, optionId } = action.payload;
-      const question = state.find((s) => s.id === id);
-      question &&
+      const { id, oId, idx } = action.payload;
+      const question = state.find((q) => q.id === id);
+      if (question) {
         question.options.push({
-          _id,
-          id: optionId,
-          content: `옵션 ${optionId}`,
+          id: oId,
+          content: `옵션 ${idx}`,
         });
+      }
     },
     deleteOption: (state, action) => {
-      const { id, _id } = action.payload;
-      const questionIdx = state.findIndex((s) => s.id === id);
-      const options = state[questionIdx].options.filter((o) => o._id !== _id);
-      state[questionIdx].options = options;
+      const { id, oId } = action.payload;
+      const questionIdx = state.findIndex((q) => q.id === id);
+      if (questionIdx !== -1) {
+        state[questionIdx].options = state[questionIdx].options.filter(
+          (o) => o.id !== oId
+        );
+      }
     },
     setOptionContent: (state, action) => {
-      const { id, _id, content } = action.payload;
-      const questionIdx = state.findIndex((s) => s.id === id);
-      const option = state[questionIdx].options.find((o) => o._id === _id);
-      option && (option.content = content);
+      const { id, oId, content } = action.payload;
+      const questionIdx = state.findIndex((q) => q.id === id);
+      const optionIdx =
+        questionIdx !== -1
+          ? state[questionIdx].options.findIndex((o) => o.id === oId)
+          : -1;
+      if (optionIdx !== -1) {
+        state[questionIdx].options[optionIdx].content = content;
+      }
     },
-    // setOptionContent: (state, action) => {
-    //   const { id, _id, content } = action.payload;
-    //   const questionIdx = state.findIndex((s) => s.id === id);
-    //   const optionIdx = state[questionIdx].options.findIndex(
-    //     (o) => o._id === _id
-    //   );
-    //   optionIdx && (state[questionIdx].options[optionIdx].content = content);
-    // },
+
     addQuestion: (state, action) => {
       const newQuestion = action.payload;
       state.push(newQuestion);
     },
     deleteQuestion: (state, action) => {
       const id = action.payload;
-      return state.filter((s) => s.id !== id);
+      return state.filter((q) => q.id !== id);
     },
     setAnswer: (state, action) => {
-      const { id, _id, content } = action.payload;
-      const question = state.find((s) => s.id === id);
-      question && (question.answer = content);
+      const { id, content } = action.payload;
+      const question = state.find((q) => q.id === id);
+      if (question) question.answer = content;
     },
     setAnswerListOne: (state, action) => {
-      const { id, _id, content, optionId } = action.payload;
-      const questionIdx = state.findIndex((s) => s.id === id);
+      const { id, oId, content } = action.payload;
+      const questionIdx = state.findIndex((q) => q.id === id);
       const answerList = state[questionIdx].answerList;
-      if (answerList[0]?._id === _id) {
+      if (answerList[0]?.id === oId) {
         state[questionIdx].answerList = [];
       } else {
-        state[questionIdx].answerList = [{ id: optionId, _id, content }];
+        state[questionIdx].answerList = [{ id: oId, content }];
       }
     },
     setAnswerList: (state, action) => {
-      const { id, _id, content, optionId } = action.payload;
-      const questionIdx = state.findIndex((s) => s.id === id);
+      const { id, oId, content } = action.payload;
+      const questionIdx = state.findIndex((q) => q.id === id);
       const answerList = state[questionIdx].answerList;
-      if (answerList.find((answer) => answer._id === _id)) {
+      if (answerList.find((answer) => answer.id === oId) != null) {
         state[questionIdx].answerList = answerList.filter(
-          (answer) => answer._id !== _id
+          (answer) => answer.id !== oId
         );
       } else {
-        state[questionIdx].answerList.push({ id: optionId, _id, content });
+        state[questionIdx].answerList.push({ id: oId, content });
       }
     },
     resetAnswer: (state) => {
-      state.map((s) => {
-        s.answer = "";
-        s.answerList = [];
+      state.forEach((q) => {
+        q.answer = "";
+        q.answerList = [];
       });
-    },
-    changeQuestionIdx: (state, action) => {
-      const { id, dragId } = action.payload;
-      const questionIndex = state.findIndex((q) => q.id === id);
-      // const dragIndex = state.findIndex((q) => q.id === dragId);
-      questionIndex && (state[questionIndex].dragId = dragId);
-      // if (questionIndex !== -1 && dragIndex !== -1) {
-      //   const [question] = state.splice(questionIndex, 1);
-      //   state.splice(dragIndex, 0, question);
-      // }
     },
   },
 });

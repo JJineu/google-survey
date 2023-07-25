@@ -15,10 +15,24 @@ export default function ResultQuestion({ question }: Props) {
       case QuestionType.LONG_ANSWER:
         return <div>{answer}</div>;
       case QuestionType.MULTIPLE_CHOICE:
-        return <div>{answer}</div>;
+        return (
+          <div>
+            {answerList && answerList.length > 0 ? (
+              <div>{answerList[0].content}</div>
+            ) : null}
+          </div>
+        );
       case QuestionType.CHECK_BOX:
-        case QuestionType.DROP_DOWN:
-        return getAnswerList(answerList);
+        return answerList ? getAnswerList(answerList) : null;
+      case QuestionType.DROP_DOWN:
+        return (
+          <div>
+            {answerList && answerList.length > 0 ? (
+              <div>{answerList[0].content}</div>
+            ) : null}
+          </div>
+        );
+
       default:
         return;
     }

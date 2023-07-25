@@ -10,17 +10,15 @@ type Props = {
   type: number;
   idx: number;
   questionId: string;
-  optionId: number;
-  _id?: string;
+  id?: string;
   content: string;
   isLast: boolean;
 };
-function ListOption({
+export default function ListOption({
   type,
   idx,
   questionId,
-  optionId,
-  _id,
+  id,
   content,
   isLast,
 }: Props) {
@@ -30,26 +28,29 @@ function ListOption({
   const debouncedState = useDebounce(optionContent);
 
   useEffect(() => {
-    dispatch(
-      questionActions.setOptionContent({
-        _id,
-        id: questionId,
-        content: debouncedState,
-      })
-    );
-  }, [_id, debouncedState, dispatch, questionId]);
+    if (id && questionId && content) {
+      dispatch(
+        questionActions.setOptionContent({
+          oId: id,
+          id: questionId,
+          content: debouncedState,
+        })
+      );
+    }
+  }, [content, debouncedState, dispatch, id, questionId]);
 
   const handleOptionContent = (e: ChangeEvent<HTMLInputElement>) => {
     setOptionContent(e.target.value);
   };
 
   const handleAddOption = () => {
+    const oId = v4();
     isLast &&
       dispatch(
         questionActions.addOption({
           id: questionId,
-          _id: v4(),
-          optionId: optionId,
+          oId,
+          idx,
         })
       );
   };
@@ -57,7 +58,7 @@ function ListOption({
     dispatch(
       questionActions.deleteOption({
         id: questionId,
-        _id,
+        oId: id,
       })
     );
   };
@@ -103,5 +104,3 @@ function ListOption({
     </div>
   );
 }
-
-export default React.memo(ListOption);

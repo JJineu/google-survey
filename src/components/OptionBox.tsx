@@ -14,12 +14,11 @@ export default function OptionBox({ type, options, cardId }: Props) {
     const optionList = options
       ?.map((option, idx) => (
         <ListOption
-          key={`${cardId}, ${option._id}`}
+          key={`${cardId}, ${option.id}`}
           idx={idx + 1}
           type={type}
           questionId={cardId}
-          _id={option._id}
-          optionId={option.id}
+          id={option.id}
           content={option.content}
           isLast={false}
         />
@@ -30,7 +29,6 @@ export default function OptionBox({ type, options, cardId }: Props) {
           idx={lastOptionIndex}
           type={type}
           questionId={cardId}
-          optionId={lastOptionIndex}
           content="옵션 추가"
           isLast={true}
         />

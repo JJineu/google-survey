@@ -1,22 +1,22 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import useDebounce from "../hooks/useDebounce";
-import { useAppDispatch } from "../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { surveyAction } from "../store/slice/survey";
 
 export default function Survey() {
   const dispatch = useAppDispatch();
+  const survey = useAppSelector((state) => state.survey);
 
   const [formState, setFormState] = useState({
-    title: "",
-    detail: "",
+    title: survey.title,
+    detail: survey.detail,
   });
+  const debouncedFormState = useDebounce(formState);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormState((prevFormState) => ({ ...prevFormState, [name]: value }));
   };
-
-  const debouncedFormState = useDebounce(formState);
 
   useEffect(() => {
     dispatch(

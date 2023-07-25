@@ -22,16 +22,9 @@ const menu = [
 
 type Props = {
   card: Question;
-  // key: number;
 };
 function QuestionCard({ card }: Props) {
-  // export default function QuestionCard({ key, card }: Props) {
   const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(questionActions.changeQuestionIdx({ id: card.id, dragId: key }));
-  // }, [card.id, dispatch, key]);
-
   const [text, setText] = useState("");
   const debouncedState = useDebounce(text);
 

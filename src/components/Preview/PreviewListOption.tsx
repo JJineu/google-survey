@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent } from "react";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import { Question, QuestionType } from "../../types/survey";
@@ -9,16 +9,14 @@ type Props = {
   type: number;
   questionId: string;
   question: Question;
-  _id: string;
-  optionId: number;
+  id: string;
   content: string;
 };
 export default function PreviewListOption({
   type,
   questionId,
   question,
-  _id,
-  optionId,
+  id,
   content,
 }: Props) {
   const dispatch = useAppDispatch();
@@ -26,7 +24,7 @@ export default function PreviewListOption({
     dispatch(
       questionActions.setAnswerListOne({
         id: questionId,
-        _id,
+        oId: id,
         content,
       })
     );
@@ -34,16 +32,17 @@ export default function PreviewListOption({
 
   const handleAnswerOfCheckBox = () => {
     dispatch(
-      questionActions.setAnswerList({ id: questionId, _id, optionId, content })
+      questionActions.setAnswerList({ id: questionId, oId: id, content })
     );
   };
-  // useEffect(() => {
-  //   console.log("Updated answerList:", question.answer);
-  // }, [question.answer]);
 
   const handleAnswerOfDropDown = (e: SelectChangeEvent) => {
     dispatch(
-      questionActions.setAnswerListOne({ id: questionId, _id: e.target.value })
+      questionActions.setAnswerListOne({
+        id: questionId,
+        oId: e.target.value,
+        content,
+      })
     );
   };
 
@@ -55,12 +54,12 @@ export default function PreviewListOption({
             type="radio"
             className="w-5 h-6  accent-purple-500 hover:bg-gray-100 "
             checked={
-              question.answerList.find((answer) => answer._id === _id) != null
+              question.answerList.find((answer) => answer.id === id) != null
                 ? true
                 : false
             }
             onChange={handleAnswerOfMultipleChoice}
-            value={question.answerList[0]._id}
+            value={question.answerList[0]?.id}
           />
         );
       case QuestionType.CHECK_BOX:
@@ -69,7 +68,7 @@ export default function PreviewListOption({
             type="checkbox"
             className="w-5 h-6 accent-purple-500 hover:bg-gray-100 rounded-full"
             checked={
-              question.answerList.find((answer) => answer._id === _id) != null
+              question.answerList.find((answer) => answer.id === id) != null
                 ? true
                 : false
             }
@@ -79,7 +78,7 @@ export default function PreviewListOption({
       case QuestionType.DROP_DOWN:
         return (
           <SelectBox
-            value={question.answerList[0]?._id}
+            value={question.answerList[0].id}
             menu={question.options}
             onChange={handleAnswerOfDropDown}
           />

@@ -11,14 +11,13 @@ export default function SideBar() {
     type: 2,
     options: [
       {
-        id: 1,
+        id: v4(),
         content: "옵션 1",
       },
     ],
     isNecessary: false,
     answer: "",
     answerList: [],
-    // dragId: 99,
   });
 
   const handleAddQuestion = () => {
