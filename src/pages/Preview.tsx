@@ -1,12 +1,14 @@
-import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import PreviewQuestion from "../components/Preview/PreviewQuestion";
 import { useNavigate } from "react-router-dom";
 import { questionActions } from "../store/slice/question";
+import DefaultButton from "../components/icons/DefaultButton";
 
-export default function Preview() {
+export default function PreviewPage() {
   const router = useNavigate();
   const dispatch = useAppDispatch();
+  const { survey, question } = useAppSelector((state) => state);
+
   const handleSubmit = () => {
     let isFilled = true;
     question.forEach((q) => {
@@ -21,9 +23,9 @@ export default function Preview() {
     }
   };
   const handleReset = () => {
-    dispatch(questionActions.resetAnswer(question));
+    dispatch(questionActions.resetAnswer());
   };
-  const { survey, question } = useAppSelector((state) => state);
+
   return (
     <div className="w-4/5 mx-auto overflow-x-hidden px-10">
       <div className="flex flex-col p-5 mx-auto justify-center items-center  max-w-screen-md ">
@@ -44,12 +46,16 @@ export default function Preview() {
         </div>
         {/* buttons */}
         <div className="w-full flex justify-between mt-3">
-          <Button variant="contained" onClick={handleSubmit}>
-            제출
-          </Button>
-          <Button variant="text" onClick={handleReset}>
-            양식 지우기
-          </Button>
+          <DefaultButton
+            variant="contained"
+            onClick={handleSubmit}
+            text="제출"
+          />
+          <DefaultButton
+            variant="text"
+            onClick={handleReset}
+            text="양식 지우기"
+          />
         </div>
       </div>
     </div>

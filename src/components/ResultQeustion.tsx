@@ -1,11 +1,14 @@
-import { Question, QuestionType } from "../../types/survey";
+import { Question, QuestionOption, QuestionType } from "../types/survey";
 
 type Props = {
   question: Question;
 };
-export default function ResultBox({ question }: Props) {
+export default function ResultQuestion({ question }: Props) {
   const { type, answer, answerList } = question;
 
+  const getAnswerList = (answerList: QuestionOption[]) => {
+    return answerList.map((answer) => <div>{answer.content}</div>);
+  };
   const switchOption = () => {
     switch (type) {
       case QuestionType.SHORT_ANSWER:
@@ -14,9 +17,8 @@ export default function ResultBox({ question }: Props) {
       case QuestionType.MULTIPLE_CHOICE:
         return <div>{answer}</div>;
       case QuestionType.CHECK_BOX:
-        return <div>{answerList}</div>;
-      case QuestionType.DROP_DOWN:
-        return <div>{answer}</div>;
+        case QuestionType.DROP_DOWN:
+        return getAnswerList(answerList);
       default:
         return;
     }

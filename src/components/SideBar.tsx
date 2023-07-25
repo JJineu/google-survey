@@ -18,7 +18,7 @@ export default function SideBar() {
     isNecessary: false,
     answer: "",
     answerList: [],
-    dragId: 99,
+    // dragId: 99,
   });
 
   const handleAddQuestion = () => {

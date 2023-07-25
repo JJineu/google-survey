@@ -16,9 +16,11 @@ export default function PreviewOptionBox({ question }: Props) {
   const getOptionList = (type: number) => {
     const optionList = options?.map((option) => (
       <PreviewListOption
+        key={`${id}, ${option._id}`}
         question={question}
         type={type}
         questionId={id}
+        _id={option._id}
         optionId={option.id}
         content={option.content}
       />
@@ -27,7 +29,10 @@ export default function PreviewOptionBox({ question }: Props) {
   };
 
   const handleAnswerOfDropDown = (e: SelectChangeEvent) => {
-    dispatch(questionActions.setAnswer({ id, content: e.target.value }));
+    console.log(options)
+    console.log(e.target.value)
+    console.log(options.find(f => f._id === e.target.value))
+    dispatch(questionActions.setAnswerListOne({ id, _id: e.target.value }));
   };
 
   const switchOption = () => {
@@ -43,7 +48,7 @@ export default function PreviewOptionBox({ question }: Props) {
       case QuestionType.DROP_DOWN:
         return (
           <SelectBox
-            value={question.answer}
+            value={question.answerList[0]?._id}
             menu={question.options}
             onChange={handleAnswerOfDropDown}
           />

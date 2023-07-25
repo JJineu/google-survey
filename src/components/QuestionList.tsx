@@ -13,7 +13,7 @@ export default function QuestionList() {
               key={q.id}
               className="my-3 py-3 bg-white border-2 rounded-md focus-within:border-l-red-400"
             >
-              <QuestionCard key={idx} card={q} />
+              <QuestionCard key={q.id} card={q} />
             </li>
           ))}
       </ul>

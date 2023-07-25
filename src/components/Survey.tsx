@@ -1,14 +1,31 @@
-import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import { ChangeEvent, useEffect, useState } from "react";
+import useDebounce from "../hooks/useDebounce";
+import { useAppDispatch } from "../hooks/useRedux";
 import { surveyAction } from "../store/slice/survey";
 
 export default function Survey() {
-  const survey = useAppSelector((state) => state.survey);
   const dispatch = useAppDispatch();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [formState, setFormState] = useState({
+    title: "",
+    detail: "",
+  });
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    dispatch(surveyAction.setSurvey({ ...survey, [name]: value }));
+    setFormState((prevFormState) => ({ ...prevFormState, [name]: value }));
   };
+
+  const debouncedFormState = useDebounce(formState);
+
+  useEffect(() => {
+    dispatch(
+      surveyAction.setSurvey({
+        title: debouncedFormState.title,
+        detail: debouncedFormState.detail,
+      })
+    );
+  }, [debouncedFormState, dispatch]);
 
   return (
     <div className="flex flex-col p-5 bg-white border-2 rounded-md focus-within:border-l-red-400">
@@ -17,16 +34,16 @@ export default function Survey() {
         className="text-3xl mb-4 focus:border-b-2 focus:border-purple-500 outline-none"
         placeholder="제목 없는 설문지"
         name="title"
-        value={survey.title}
-        onChange={handleChange}
+        value={formState.title}
+        onChange={handleInputChange}
       />
       <input
         type="text"
         className="focus:border-b-2 focus:border-purple-500 outline-none"
         placeholder="설문지 설명"
         name="detail"
-        value={survey.detail}
-        onChange={handleChange}
+        value={formState.detail}
+        onChange={handleInputChange}
       />
     </div>
   );

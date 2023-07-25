@@ -1,7 +1,7 @@
 import { useAppSelector } from "../hooks/useRedux";
-import ResultBox from "../components/Preview/ResultBox";
+import ResultQuestion from "../components/ResultQeustion";
 
-export default function Result() {
+export default function ResultPage() {
   const { survey, question } = useAppSelector((state) => state);
   return (
     <div className="w-4/5 mx-auto overflow-x-hidden px-10">
@@ -18,7 +18,7 @@ export default function Result() {
           {/* questions */}
           <div className="flex flex-col">
             {question &&
-              question.map((q) => <ResultBox key={q.id} question={q} />)}
+              question.map((q) => <ResultQuestion key={q.id} question={q} />)}
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import { location } from "../../types/survey";
+import useDebounce from "../../hooks/useDebounce";
 
 type Props = {
   type: number;
@@ -13,17 +14,24 @@ export default function AnswerOption({
   questionId,
   location = "main",
 }: Props) {
-  const question = useAppSelector((state) => state.question);
-  const ques = question.find((q) => q.id === questionId);
+  const questions = useAppSelector((state) => state.question);
+  const question = questions.find((q) => q.id === questionId);
   const dispatch = useAppDispatch();
 
-  const handleAnswerOption = (e: ChangeEvent<HTMLInputElement>) => {
+  const [answer, setAnswer] = useState("");
+  const debouncedState = useDebounce(answer);
+
+  useEffect(() => {
     dispatch(
       questionActions.setAnswer({
-        id: ques?.id,
-        content: e.target.value,
+        id: question?.id,
+        content: debouncedState,
       })
     );
+  }, [debouncedState, dispatch, question?.id]);
+
+  const handleOptionContent = (e: ChangeEvent<HTMLInputElement>) => {
+    setAnswer(e.target.value);
   };
 
   const setLocation = (location: location) => {
@@ -42,8 +50,8 @@ export default function AnswerOption({
           <input
             type="text"
             placeholder="답변"
-            value={ques?.answer}
-            onChange={handleAnswerOption}
+            value={answer}
+            onChange={handleOptionContent}
           />
         );
       default:

@@ -1,21 +1,24 @@
-import { Question, QuestionType } from "../types/survey";
+import { QuestionOption, QuestionType } from "../types/survey";
 import AnswerOption from "./QuestionOption/AnswerOption";
 import ListOption from "./QuestionOption/ListOption";
 
 type Props = {
-  card: Question;
+  cardId: string;
+  type: number;
+  options: QuestionOption[];
 };
-export default function OptionBox({ card }: Props) {
-  const { type, options, id: cardId } = card;
+export default function OptionBox({ type, options, cardId }: Props) {
 
   const getOptionList = (type: number) => {
     const lastOptionIndex = (options?.length || 0) + 1;
     const optionList = options
-      ?.map((option) => (
+      ?.map((option, idx) => (
         <ListOption
-          key={`${cardId}, ${option.id}`}
+          key={`${cardId}, ${option._id}`}
+          idx={idx + 1}
           type={type}
           questionId={cardId}
+          _id={option._id}
           optionId={option.id}
           content={option.content}
           isLast={false}
@@ -24,6 +27,7 @@ export default function OptionBox({ card }: Props) {
       .concat(
         <ListOption
           key={`${cardId}, ${lastOptionIndex}`}
+          idx={lastOptionIndex}
           type={type}
           questionId={cardId}
           optionId={lastOptionIndex}

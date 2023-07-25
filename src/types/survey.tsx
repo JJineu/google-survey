@@ -10,11 +10,13 @@ export type Question = {
   options: QuestionOption[];
   isNecessary: boolean;
   answer: string;
-  answerList: number[];
+  // answerList: number[];
+  answerList: QuestionOption[];
   dragId: number;
 };
 
 export type QuestionOption = {
+  _id: string;
   id: number;
   content: string;
 };

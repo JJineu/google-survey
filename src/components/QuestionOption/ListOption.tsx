@@ -1,43 +1,64 @@
-import { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { questionActions } from "../../store/slice/question";
 import ClearButton from "../icons/ClearButton";
 import { QuestionType } from "../../types/survey";
+import useDebounce from "../../hooks/useDebounce";
+import { v4 } from "uuid";
 
 type Props = {
   type: number;
+  idx: number;
   questionId: string;
   optionId: number;
+  _id?: string;
   content: string;
   isLast: boolean;
 };
-export default function ListOption({
+function ListOption({
   type,
+  idx,
   questionId,
   optionId,
+  _id,
   content,
   isLast,
 }: Props) {
   const dispatch = useAppDispatch();
 
+  const [optionContent, setOptionContent] = useState(content);
+  const debouncedState = useDebounce(optionContent);
+
+  useEffect(() => {
+    dispatch(
+      questionActions.setOptionContent({
+        _id,
+        id: questionId,
+        content: debouncedState,
+      })
+    );
+  }, [_id, debouncedState, dispatch, questionId]);
+
+  const handleOptionContent = (e: ChangeEvent<HTMLInputElement>) => {
+    setOptionContent(e.target.value);
+  };
+
   const handleAddOption = () => {
     isLast &&
       dispatch(
-        questionActions.addOption({ id: questionId, optionId: optionId })
+        questionActions.addOption({
+          id: questionId,
+          _id: v4(),
+          optionId: optionId,
+        })
       );
-  };
-  const handleListOption = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      questionActions.setOptions({
-        id: questionId,
-        optionId: optionId,
-        content: e.target.value,
-      })
-    );
   };
   const handledeleteOption = () => {
     dispatch(
-      questionActions.deleteOption({ id: questionId, optionId: optionId })
+      questionActions.deleteOption({
+        id: questionId,
+        _id,
+      })
     );
   };
 
@@ -60,7 +81,7 @@ export default function ListOption({
           />
         );
       case QuestionType.DROP_DOWN:
-        return <div className="text-sm">{optionId}</div>;
+        return <div className="text-sm">{idx}</div>;
       default:
         return;
     }
@@ -74,11 +95,13 @@ export default function ListOption({
           isLast ? "text-sm text-slate-500" : "w-full"
         }`}
         type="text"
-        value={content}
-        onChange={handleListOption}
+        value={optionContent}
+        onChange={handleOptionContent}
         onClick={handleAddOption}
       />
       {!isLast && <ClearButton onClick={handledeleteOption} />}
     </div>
   );
 }
+
+export default React.memo(ListOption);
