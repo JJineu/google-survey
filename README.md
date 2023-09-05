@@ -1,4 +1,5 @@
-# Minesweeper
+# google-survey
+
 - 구글 설문조사 클론입니다.
 
 
